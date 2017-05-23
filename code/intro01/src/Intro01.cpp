@@ -6,19 +6,6 @@
 #include "AssetManagement\AssetManager.h"
 #include "Resource.h"
 
-//==============================================
-// TODO:
-//   Eventually move this off into a separate utility library
-//   We output any caught memory leaks here.
-//   See details here: https://msdn.microsoft.com/en-us/library/x98tx3cf.aspx
-#if defined(DEBUG) || defined(_DEBUG)
-#define _CRTDBG_MAP_ALLOC
-#define _CRTDBG_MAP_ALLOC_NEW
-#include <stdlib.h>
-#include "crtdbg.h"
-#endif
-//==============================================
-
 #include "D3D11.h"
 #include "Graphics\RenderDevice.h"
 #include "Graphics\VisualGrid.h"
@@ -48,12 +35,6 @@ int APIENTRY wWinMain(_In_      HINSTANCE hInstance,
     UNREFERENCED_PARAMETER(hPrevInstance);
     UNREFERENCED_PARAMETER(lpCmdLine);
 
-    // Enable run-time memory check for debug builds.
-    // Again, this should live in a separate library
-#if defined(DEBUG) | defined(_DEBUG)
-    _CrtSetDbgFlag( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
-#endif
-
     if( FAILED( InitWindow( hInstance, nCmdShow ) ) )
     {
         return 0;
@@ -80,10 +61,6 @@ int APIENTRY wWinMain(_In_      HINSTANCE hInstance,
     }
 
     delete gVisualGrid;
-
-#if defined(DEBUG) | defined(_DEBUG)
-    _CrtDumpMemoryLeaks();
-#endif
 
     return ( int )msg.wParam;
 }
