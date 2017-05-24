@@ -37,14 +37,14 @@ LRESULT CALLBACK    WndProc( HWND, UINT, WPARAM, LPARAM );
 RenderDevice    gRenderDevice;
 VisualGrid*     gVisualGrid = NULL;
 AssetManager*   gAssetManager;
-HINSTANCE	    gHInst = NULL;
-HWND		    gHWnd	= NULL;
+HINSTANCE       gHInst = NULL;
+HWND            gHWnd	= NULL;
 
 
 int APIENTRY wWinMain(_In_      HINSTANCE hInstance,
-                     _In_opt_   HINSTANCE hPrevInstance,
-                     _In_       LPWSTR    lpCmdLine,
-                     _In_       int       nCmdShow)
+                      _In_opt_  HINSTANCE hPrevInstance,
+                      _In_      LPWSTR    lpCmdLine,
+                      _In_      int       nCmdShow)
 {
     UNREFERENCED_PARAMETER(hPrevInstance);
     UNREFERENCED_PARAMETER(lpCmdLine);
@@ -55,15 +55,8 @@ int APIENTRY wWinMain(_In_      HINSTANCE hInstance,
     _CrtSetDbgFlag( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
 #endif
 
-    if( FAILED( InitWindow( hInstance, nCmdShow ) ) )
-    {
-        return 0;
-    }
-
-    if ( FAILED(InitResources()) )
-    {
-        return 0;
-    }
+    if ( FAILED( InitWindow( hInstance, nCmdShow ) ) ) return 0;
+    if ( FAILED(InitResources()) ) return 0;
 
     // Main message loop
     MSG msg = {0};
@@ -87,7 +80,7 @@ int APIENTRY wWinMain(_In_      HINSTANCE hInstance,
     _CrtDumpMemoryLeaks();
 #endif
 
-    return ( int )msg.wParam;
+    return (int)msg.wParam;
 }
 
 //--------------------------------------------------------------------------------------
@@ -109,29 +102,22 @@ HRESULT InitWindow( HINSTANCE _instance, int _cmdShow )
     wcex.lpszMenuName = NULL;
     wcex.lpszClassName = L"WTGTP_01";
     wcex.hIconSm = LoadIcon( wcex.hInstance, ( LPCTSTR )IDI_INTRO01 );
-    if( !RegisterClassEx( &wcex ) )
-    {
-        return E_FAIL;
-    }
+
+    if( !RegisterClassEx( &wcex ) ) return E_FAIL;
 
     // Create window
     gHInst = _instance;
     RECT rc = { 0, 0, 800, 600 };
     AdjustWindowRect( &rc, WS_OVERLAPPEDWINDOW, FALSE );
     gHWnd = CreateWindow( L"WTGTP_01", L"Walking The Graphics Pipeline - 01", WS_OVERLAPPEDWINDOW,
-        CW_USEDEFAULT, CW_USEDEFAULT, rc.right - rc.left, rc.bottom - rc.top, NULL, NULL, _instance,
-        NULL );
-    if( !gHWnd )
-    {
-        return E_FAIL;
-    }
+                          CW_USEDEFAULT, CW_USEDEFAULT, rc.right - rc.left, rc.bottom - rc.top, NULL, NULL, _instance,
+                          NULL );
+
+    if( !gHWnd ) return E_FAIL;
 
     ShowWindow( gHWnd, _cmdShow );
 
-    if( gRenderDevice.Init( gHWnd, rc.right, rc.bottom, TRUE ) )
-    {
-        return S_OK;
-    }
+    if( gRenderDevice.Init( gHWnd, rc.right, rc.bottom, TRUE ) ) return S_OK;
 
     return S_FALSE;
 }
@@ -143,10 +129,7 @@ HRESULT InitResources( void )
     gAssetManager = new AssetManager();
     gAssetManager->Initialize();
 
-    if (!gAssetManager->AddPath("assets\\raw"))
-    {
-        return S_FALSE;
-    }
+    if (!gAssetManager->AddPath("assets\\raw")) return S_FALSE;
 
     gAssetManager->LoadMesh("lte-orb.fbx");
 
@@ -179,4 +162,3 @@ LRESULT CALLBACK WndProc( HWND _hWnd, UINT _msg, WPARAM _wParam, LPARAM _lParam 
 
     return 0;
 }
-
