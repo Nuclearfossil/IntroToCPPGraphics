@@ -6,6 +6,7 @@
 
 #include "utils\assert.h"
 
+
 Model::Model()
 {
     mMeshArray = nullptr;
@@ -19,6 +20,7 @@ Model::~Model()
     for (unsigned int index = 0; index < mMeshCount; index++)
     {
         delete mMeshArray[index];
+        mMeshArray[index] = nullptr;
     }
 
     delete[] mMeshArray;

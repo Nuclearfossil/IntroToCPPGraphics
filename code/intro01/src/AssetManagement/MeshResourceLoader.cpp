@@ -10,6 +10,8 @@
 #include "assimp\cimport.h"
 #include "assimp\scene.h"
 
+#include "utils\utils.h"
+
 #include <d3d11.h>
 
 MeshResourceLoader::MeshResourceLoader()
@@ -48,7 +50,7 @@ Model* MeshResourceLoader::Load(const aiScene* scene)
             vertexData[vertexIndex].UV.y = currentMesh->mTextureCoords[0][vertexIndex].y;
         }
 
-        unsigned int* indexData = new unsigned int[indexCount];
+        unsigned int* indexData = new unsigned int[indexCount+1];
         unsigned int faceCount = currentMesh->mNumFaces;
         unsigned int indexOffset = 0;
         for (int faceIndex = 0; faceIndex < faceCount; faceIndex++)

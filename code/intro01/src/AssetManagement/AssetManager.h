@@ -4,8 +4,8 @@
 /// 
 #pragma once
 
-#include "EASTL\vector.h"
-#include "EASTL\string.h"
+#include <vector>
+#include <string>
 
 class IResourceLoader;
 class Model;
@@ -28,8 +28,8 @@ private:
     bool GetPathToResource(const char* resource, char* dest, unsigned int size);
 
 private:
-    eastl::string                   mBasePath;
-    eastl::vector<eastl::string>    mPaths;
+    std::string                   mBasePath;
+    std::vector<std::string>    mPaths;
 
-    eastl::vector<Model*>            mModels;
+    std::vector<Model*>            mModels;
 };

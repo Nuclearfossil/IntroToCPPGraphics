@@ -7,13 +7,16 @@
 #include "AssetManager.h"
 #include "IResourceLoader.h"
 #include "utils\assert.h"
-#include "utils\utils.h"
 
 #include "assimp\cimport.h"
 #include "assimp\scene.h"
 
 #include "MeshResourceLoader.h"
 #include "Graphics\Model.h"
+
+#include "utils\utils.h"
+
+#include <sstream>
 
 AssetManager::AssetManager()
 {
@@ -40,7 +43,7 @@ bool AssetManager::AddPath(const char* pathname)
     // check to see if path exists before adding?
     if (Exists(pathname))
     {
-        mPaths.push_back(eastl::string(pathname));
+        mPaths.push_back(std::string(pathname));
         result = (mPaths.size() > 0);
     }
 
@@ -88,15 +91,15 @@ bool AssetManager::GetPathToResource(const char* resource, char* dest, unsigned 
     ASSERT(dest != nullptr);
 
     bool result = false;
-    eastl::string normalized;
+    std::string normalized;
     for (auto path : mPaths)
     {
-        eastl::string filePath;
-        filePath.append_sprintf("%s\\%s\\%s", mBasePath.c_str(), path.c_str(), resource);
-        if (Exists(filePath.c_str()))
+        std::stringstream filePath;
+        filePath << mBasePath << "\\" << path << "\\" << resource;
+        if (Exists(filePath.str().c_str()))
         {
-            normalized = filePath;
-            strcpy(dest, filePath.c_str());
+            normalized = filePath.str();
+            strcpy(dest, normalized.c_str());
             result = true;
             break;
         }

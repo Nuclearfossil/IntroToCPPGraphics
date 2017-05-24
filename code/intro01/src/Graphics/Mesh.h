@@ -30,5 +30,6 @@ private:
 
     PositionNormalUVLayout* mRawVertexData;
     unsigned int* mIndexBufferData;
+    unsigned int mIndexCount;
 };
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "EASTL\vector.h"
+#include <vector>
 
 class SceneNode
 {
@@ -9,6 +9,6 @@ public:
     ~SceneNode();
 
 public:
-    eastl::vector<SceneNode> mChildren;
+    std::vector<SceneNode> mChildren;
 };
 
