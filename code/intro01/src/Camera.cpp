@@ -36,7 +36,6 @@ void Camera::SetPosition(float _x, float _y, float _z)
     m_positionX = _x;
     m_positionY = _y;
     m_positionZ = _z;
-    return;
 }
 
 
@@ -45,7 +44,6 @@ void Camera::SetRotation(float _x, float _y, float _z)
     m_rotationX = _x;
     m_rotationY = _y;
     m_rotationZ = _z;
-    return;
 }
 
 void Camera::Render()

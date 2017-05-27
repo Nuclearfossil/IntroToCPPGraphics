@@ -12,9 +12,7 @@ bool Exists(const char* filename)
     ASSERT(filename != nullptr);
 
     if (_access(filename, 0) == 0)
-    {
         result = true;
-    }
 
     return result;
 }

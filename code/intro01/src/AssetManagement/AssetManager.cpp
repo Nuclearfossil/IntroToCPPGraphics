@@ -12,7 +12,9 @@
 #include "assimp\scene.h"
 
 #include "MeshResourceLoader.h"
+
 #include "Graphics\Model.h"
+#include "Graphics\ShaderResource.h"
 
 #include "utils\utils.h"
 
@@ -25,9 +27,10 @@ AssetManager::AssetManager()
 AssetManager::~AssetManager()
 {
     for (auto model : mModels)
-    {
-        delete model;
-    }
+        delete model.second;
+
+    for (auto shader : mShaders)
+        delete shader.second;
 }
 
 void AssetManager::Initialize()
@@ -40,6 +43,7 @@ bool AssetManager::AddPath(const char* pathname)
     ASSERT(pathname != nullptr);
 
     bool result = false;
+
     // check to see if path exists before adding?
     if (Exists(pathname))
     {
@@ -50,7 +54,7 @@ bool AssetManager::AddPath(const char* pathname)
     return result;
 }
 
-bool AssetManager::LoadMesh(const char* filename)
+bool AssetManager::LoadModel(const char* filename)
 {
     ASSERT(filename != nullptr);
 
@@ -71,7 +75,7 @@ bool AssetManager::LoadMesh(const char* filename)
         {            
             MeshResourceLoader meshLoader;
             Model* model = meshLoader.Load(scene);
-            mModels.push_back(model);
+            mModels[filename] = model;
         }
         else
         {
@@ -83,6 +87,37 @@ bool AssetManager::LoadMesh(const char* filename)
         aiReleaseImport(scene);
     }
     return result;
+}
+
+Model* AssetManager::GetModel(const char* filename)
+{
+    if (mModels.find(filename) != mModels.end())
+        return mModels[filename];
+
+    return nullptr;
+}
+
+bool AssetManager::LoadShader(const char* filename, const char* shadermodel, const char* entrypoint)
+{
+    ASSERT(filename != nullptr);
+
+    bool result = false;
+    char filepath[1024];
+
+    result = GetPathToResource(filename, filepath, 1024);
+
+    // Build the asset, since the file exists
+    if (result)
+    {
+        ShaderResource* shader = new ShaderResource();
+        if (shader->LoadShader(filepath, shadermodel, entrypoint))
+        {
+            mShaders[filename] = shader;
+            return true;
+        }
+    }
+
+    return false;
 }
 
 bool AssetManager::GetPathToResource(const char* resource, char* dest, unsigned int size)

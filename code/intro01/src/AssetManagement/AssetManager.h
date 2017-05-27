@@ -4,11 +4,12 @@
 /// 
 #pragma once
 
-#include <vector>
+#include <unordered_map>
 #include <string>
 
 class IResourceLoader;
 class Model;
+class ShaderResource;
 
 class AssetManager
 {
@@ -20,16 +21,19 @@ public:
     void Initialize();
 
     bool AddPath(const char* pathname);
+    bool LoadModel(const char* filename);
+    bool LoadShader(const char* filename, const char* shadermodel, const char* entrypoint);
 
+    Model* GetModel(const char* filename);
 
-    bool LoadMesh(const char* filename);
 
 private:
     bool GetPathToResource(const char* resource, char* dest, unsigned int size);
 
 private:
-    std::string                   mBasePath;
+    std::string                 mBasePath;
     std::vector<std::string>    mPaths;
 
-    std::vector<Model*>            mModels;
+    std::unordered_map<std::string, Model*> mModels;
+    std::unordered_map<std::string, ShaderResource*> mShaders;
 };

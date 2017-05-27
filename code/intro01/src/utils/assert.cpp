@@ -4,10 +4,10 @@
 bool AssertFunction( bool test, char* desc, int line, char* file )
 {
     static char outputbuffer[2048];
-    if ( !test )
+    if (!test)
     {
-        sprintf( outputbuffer, "%s line:[%d] file: %s", desc, line, file );
-        OutputDebugStringA( outputbuffer );
+        sprintf(outputbuffer, "%s line:[%d] file: %s", desc, line, file);
+        OutputDebugStringA(outputbuffer);
     }
 
     return !test;
