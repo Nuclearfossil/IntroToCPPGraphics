@@ -6,7 +6,6 @@
 
 #include "utils\assert.h"
 
-
 Model::Model()
 {
     mMeshArray = nullptr;
@@ -58,4 +57,12 @@ bool Model::AddMesh(Mesh* mesh)
     }
 
     return result;
+}
+
+void Model::Render()
+{
+    for (unsigned int index = 0; index < mMeshCount; index++)
+    {
+        mMeshArray[index]->Render();
+    }
 }

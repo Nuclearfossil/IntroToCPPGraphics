@@ -1,4 +1,6 @@
 #pragma once
+class ShaderResource;
+
 class ColorShader
 {
 private:
@@ -10,22 +12,20 @@ private:
     };
 
 public:
-    ColorShader(void);
-    ColorShader(const ColorShader&);
-    ~ColorShader(void);
+    ColorShader();
+    ~ColorShader();
 
-    bool Init(ID3D11Device*, HWND);
+    bool InitShader(ID3D11Device* _device, HWND _hwnd, ShaderResource* _vertexShader, ShaderResource* _pixelShader);
     void Shutdown();
-    bool Render(ID3D11DeviceContext*, int, DirectX::XMMATRIX&, DirectX::XMMATRIX&, DirectX::XMMATRIX&);
 
+    bool Render(ID3D11DeviceContext* _context, DirectX::XMMATRIX& _worldMatrix, DirectX::XMMATRIX& _viewMatrix, DirectX::XMMATRIX& _projectionMatrix);
 
 private:
-    bool InitShader(ID3D11Device* _device, HWND _hwnd, WCHAR* _vsFilename, WCHAR* _psFilename);
     void ShutdownShader();
     void OutputShaderErrorMessage(ID3D10Blob*, HWND, WCHAR*);
 
-    bool SetShaderParameters(ID3D11DeviceContext*, DirectX::XMMATRIX&, DirectX::XMMATRIX&, DirectX::XMMATRIX& );
-    void RenderShader(ID3D11DeviceContext*, int);
+    bool SetShaderParameters(ID3D11DeviceContext* _context, DirectX::XMMATRIX& _worldMatrix, DirectX::XMMATRIX& _viewMatrix, DirectX::XMMATRIX& _projectionMatrix);
+    void RenderShader(ID3D11DeviceContext* _context);
 
 private:
     ID3D11VertexShader*		m_vertexShader;

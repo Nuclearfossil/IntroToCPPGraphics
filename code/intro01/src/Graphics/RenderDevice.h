@@ -26,6 +26,7 @@ public:
 
     void Present();
     ID3D11Device* GetDevice() { return mDevice; }
+    ID3D11DeviceContext* const GetDeviceContext() const { return mImmediateContext; }
 
     VisualGrid* CreateVisualGrid();
 

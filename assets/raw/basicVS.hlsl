@@ -11,7 +11,7 @@
 //--------------------------------------------------------------------------------------
 cbuffer cbPerObject : register( b0 )
 {
-    matrix        g_mWorldViewProjection    : packoffset( c0 );
+    matrix        g_mWorldViewProjection  : packoffset( c0 );
     matrix        g_mWorld                : packoffset( c4 );
 };
 
@@ -21,13 +21,13 @@ cbuffer cbPerObject : register( b0 )
 struct VS_INPUT
 {
     float4 vPosition    : POSITION;
-    float3 vNormal        : NORMAL;
-    float2 vTexcoord    : TEXCOORD0;
+    float3 vNormal      : NORMAL;
+    float2 vTexcoord    : TEXCOORD;
 };
 
 struct VS_OUTPUT
 {
-    float3 vNormal        : NORMAL;
+    float3 vNormal      : NORMAL;
     float2 vTexcoord    : TEXCOORD0;
     float4 vPosition    : SV_POSITION;
 };

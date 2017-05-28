@@ -25,10 +25,10 @@ public:
     bool LoadShader(const char* filename, const char* shadermodel, const char* entrypoint);
 
     Model* GetModel(const char* filename);
-
+    ShaderResource* GetShader(const char* filename);
 
 private:
-    bool GetPathToResource(const char* resource, char* dest, unsigned int size);
+    bool GetPathToResource(const char* resource, char* dest);
 
 private:
     std::string                 mBasePath;

@@ -2,7 +2,7 @@
 #include "D3D11.h"
 #include "VisualGrid.h"
 
-#include "Utils.h"
+#include "utils\Utils.h"
 
 VisualGrid::VisualGrid(void)
 {

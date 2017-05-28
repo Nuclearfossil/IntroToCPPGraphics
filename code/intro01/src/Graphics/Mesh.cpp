@@ -43,3 +43,8 @@ bool Mesh::Load(PositionNormalUVLayout* vertices, unsigned int vertexCount, unsi
     resourceData.pSysMem = vertices;
     return false;
 }
+
+void Mesh::Render()
+{
+
+}

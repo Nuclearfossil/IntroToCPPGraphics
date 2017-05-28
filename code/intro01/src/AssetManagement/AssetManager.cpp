@@ -17,6 +17,7 @@
 #include "Graphics\ShaderResource.h"
 
 #include "utils\utils.h"
+#include "utils\memory.h"
 
 #include <sstream>
 
@@ -61,7 +62,7 @@ bool AssetManager::LoadModel(const char* filename)
     bool result = false;
     char filepath[1024];
 
-    result = GetPathToResource(filename, filepath, 1024);
+    result = GetPathToResource(filename, filepath);
 
     // Build the asset, since the file exists
     if (result)
@@ -91,10 +92,24 @@ bool AssetManager::LoadModel(const char* filename)
 
 Model* AssetManager::GetModel(const char* filename)
 {
-    if (mModels.find(filename) != mModels.end())
-        return mModels[filename];
+    ASSERT(filename != nullptr);
 
-    return nullptr;
+    Model* result = nullptr;
+    if (mModels.find(filename) != mModels.end())
+        result = mModels[filename];
+
+    return result;
+}
+
+ShaderResource* AssetManager::GetShader(const char* filename)
+{
+    ASSERT(filename != nullptr);
+
+    ShaderResource* result = nullptr;
+    if (mShaders.find(filename) != mShaders.end())
+        result = mShaders[filename];
+
+    return result;
 }
 
 bool AssetManager::LoadShader(const char* filename, const char* shadermodel, const char* entrypoint)
@@ -104,7 +119,7 @@ bool AssetManager::LoadShader(const char* filename, const char* shadermodel, con
     bool result = false;
     char filepath[1024];
 
-    result = GetPathToResource(filename, filepath, 1024);
+    result = GetPathToResource(filename, filepath);
 
     // Build the asset, since the file exists
     if (result)
@@ -113,14 +128,14 @@ bool AssetManager::LoadShader(const char* filename, const char* shadermodel, con
         if (shader->LoadShader(filepath, shadermodel, entrypoint))
         {
             mShaders[filename] = shader;
-            return true;
+            result = true;
         }
     }
 
-    return false;
+    return result;
 }
 
-bool AssetManager::GetPathToResource(const char* resource, char* dest, unsigned int size)
+bool AssetManager::GetPathToResource(const char* resource, char* dest)
 {
     ASSERT(resource != nullptr);
     ASSERT(dest != nullptr);

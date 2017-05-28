@@ -13,13 +13,20 @@
 #define OFF     1-
 #define USING(x) ((x 0) == 2)
 
-#ifdef _DEBUG
-#define DEBUG_NEW new(_NORMAL_BLOCK, __FILE__, __LINE__)
-#define new DEBUG_NEW
-#endif
-
 //
 // File utilities
 bool Exists(const char* filename);
 
 const char* Pwd();
+
+//
+// Some COM utilities
+template <class T>
+    void SafeRelease(T& IUnk)
+{
+    if (IUnk)
+    {
+        IUnk->Release();
+        IUnk = NULL;
+    }
+}

@@ -12,6 +12,8 @@ public:
     void Initialize(unsigned int meshcount);
     bool AddMesh(Mesh* mesh);
 
+    void Render();
+
 private:
     Mesh** mMeshArray;
     Material* mMaterial;

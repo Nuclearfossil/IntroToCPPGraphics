@@ -11,6 +11,8 @@
 #include "assimp\scene.h"
 
 #include "utils\utils.h"
+#include "utils\memory.h"
+
 
 #include <d3d11.h>
 

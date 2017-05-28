@@ -24,6 +24,8 @@ public:
 
     bool Load(PositionNormalUVLayout* vertices, unsigned int vertexCount, unsigned int* indices, unsigned int indexCount);
 
+    void Render();
+
 private:
     ID3D11Buffer*           mVertexBuffer;
     ID3D11Buffer*           mIndexBuffer;

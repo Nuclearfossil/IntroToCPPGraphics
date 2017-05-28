@@ -4,6 +4,7 @@
 #include <d3dcompiler.h>
 #include <DirectXMath.h>
 
+#include <fstream>
 
 ShaderResource::ShaderResource()
 {
@@ -48,4 +49,37 @@ bool ShaderResource::CheckHRESULT(HRESULT &hr, ID3DBlob * &errorBlob)
         result = false;
     }
     return result;
+}
+
+void ShaderResource::OutputShaderErrorMessage(ID3DBlob* _errorMsg, HWND _hwnd, WCHAR* _shaderFilename)
+{
+    char* compileErrors;
+    SIZE_T bufferSize, i;
+    std::ofstream fout;
+
+
+    // Get a pointer to the error message text buffer.
+    compileErrors = (char*)(_errorMsg->GetBufferPointer());
+
+    // Get the length of the message.
+    bufferSize = _errorMsg->GetBufferSize();
+
+    // Open a file to write the error message to.
+    fout.open("shader-error.txt");
+
+    // Write out the error message.
+    for(i=0; i<bufferSize; i++)
+    {
+        fout << compileErrors[i];
+    }
+
+    // Close the file.
+    fout.close();
+
+    // Release the error message.
+    _errorMsg->Release();
+    _errorMsg = 0;
+
+    // Pop a message up on the screen to notify the user to check the text file for compile errors.
+    MessageBox(_hwnd, L"Error compiling shader.  Check shader-error.txt for message.", _shaderFilename, MB_OK);
 }

@@ -3,7 +3,8 @@
 #include "DirectXMath.h"
 #include "VisualGrid.h"
 #include "RenderDevice.h"
-#include "Utils.h"
+
+#include "utils\Utils.h"
 
 
 struct VS_CONSTANT_BUFFER
@@ -57,11 +58,17 @@ bool RenderDevice::Init( HWND _hwnd, UINT _width, UINT _height, BOOL _windowed )
     swapChainDesc.SampleDesc.Quality = 0;
     swapChainDesc.Windowed = _windowed;
 
+
+    UINT creationFlags = D3D11_CREATE_DEVICE_BGRA_SUPPORT;
+#if defined(_DEBUG)
+    // If the project is in a debug build, enable the debug layer.
+    creationFlags |= D3D11_CREATE_DEVICE_DEBUG;
+#endif
     if(FAILED(D3D11CreateDeviceAndSwapChain( 
-                    NULL, 
+                    nullptr, 
                     D3D_DRIVER_TYPE_HARDWARE, 
-                    NULL, 
-                    0, 
+                    nullptr, 
+                    creationFlags, 
                     featureLevels, 
                     numFeatureLevels,
                     D3D11_SDK_VERSION, 

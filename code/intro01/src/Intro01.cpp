@@ -20,20 +20,25 @@
 //==============================================
 
 #include "utils\utils.h"
+#include "utils\memory.h"
 
 #include "D3D11.h"
 #include "DirectXMath.h"
 
 #include "Graphics\RenderDevice.h"
 #include "Graphics\VisualGrid.h"
+#include "Graphics\Model.h"
+#include "Graphics\ColorShader.h"
+
 #include "Camera.h"
 
 //--------------------------------------------------------------------------------------
 // Forward declarations
 //--------------------------------------------------------------------------------------
-HRESULT InitWindow( HINSTANCE _instance, int _cmdShow );
-HRESULT InitResources( void );
-LRESULT CALLBACK    WndProc( HWND, UINT, WPARAM, LPARAM );
+HRESULT InitWindow(HINSTANCE _instance, int _cmdShow);
+HRESULT InitResources(void);
+
+LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
 
 //--------------------------------------------------------------------------------------
 // Globals
@@ -62,6 +67,7 @@ int APIENTRY wWinMain(_In_      HINSTANCE hInstance,
 
     if (FAILED(InitWindow(hInstance, nCmdShow)))
         return 0;
+
     if (FAILED(InitResources()))
         return 0;
 
@@ -69,9 +75,18 @@ int APIENTRY wWinMain(_In_      HINSTANCE hInstance,
     MSG msg = {0};
 
     Model* model = gAssetManager->GetModel("lte-orb.fbx");
+    ShaderResource* psShader = gAssetManager->GetShader("basicPS.hlsl");
+    ShaderResource* vsShader = gAssetManager->GetShader("basicVS.hlsl");
+    ColorShader colorShader;
+    colorShader.InitShader(gRenderDevice.GetDevice(), gHWnd, vsShader, psShader);
+
+    DirectX::XMMATRIX world, view, projection;
+    projection  = DirectX::XMMatrixPerspectiveFovLH( DirectX::XMConvertToRadians(45.0f), 800.0f/600.0f, 0.1f, 100.0f );
+
     while (WM_QUIT != msg.message)
     {
-        if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
+        bool test = PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE);
+        if (test)
         {
             TranslateMessage(&msg);
             DispatchMessage(&msg);
@@ -79,6 +94,9 @@ int APIENTRY wWinMain(_In_      HINSTANCE hInstance,
         else
         {
             gCamera->Render();
+            gCamera->GetViewMatrix(view);
+            colorShader.Render(gRenderDevice.GetDeviceContext(), world, view, projection);
+            model->Render();
             gRenderDevice.Present();
         }
     }
@@ -101,6 +119,7 @@ HRESULT InitWindow( HINSTANCE _instance, int _cmdShow )
 {
     // Register class
     WNDCLASSEX wcex;
+    wcex.lpszClassName = L"WTGTP_01";
     wcex.cbSize = sizeof(WNDCLASSEX);
     wcex.style = CS_HREDRAW | CS_VREDRAW;
     wcex.lpfnWndProc = WndProc;
@@ -111,10 +130,10 @@ HRESULT InitWindow( HINSTANCE _instance, int _cmdShow )
     wcex.hCursor = LoadCursor(nullptr, IDC_ARROW);
     wcex.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
     wcex.lpszMenuName = nullptr;
-    wcex.lpszClassName = L"WTGTP_01";
     wcex.hIconSm = LoadIcon(wcex.hInstance, (LPCTSTR)IDI_INTRO01);
 
-    if (!RegisterClassEx(&wcex)) return E_FAIL;
+    if (!RegisterClassEx(&wcex))
+        return E_FAIL;
 
     // Create window
     gHInst = _instance;
@@ -128,13 +147,15 @@ HRESULT InitWindow( HINSTANCE _instance, int _cmdShow )
                           _instance,
                           NULL );
 
-    if (!gHWnd) return E_FAIL;
+    if (!gHWnd)
+        return E_FAIL;
 
     ShowWindow(gHWnd, _cmdShow);
 
-    if (gRenderDevice.Init(gHWnd, rc.right, rc.bottom, TRUE)) return S_OK;
+    if (gRenderDevice.Init(gHWnd, rc.right, rc.bottom, TRUE))
+        return S_OK;
 
-    return S_FALSE;
+    return E_FAIL;
 }
 
 HRESULT InitResources( void )
@@ -148,7 +169,7 @@ HRESULT InitResources( void )
     gAssetManager = new AssetManager();
     gAssetManager->Initialize();
     if (!gAssetManager->AddPath("assets\\raw")) 
-        return S_FALSE;
+        return E_FAIL;
     gAssetManager->LoadModel("lte-orb.fbx");
     gAssetManager->LoadShader("basicPS.hlsl", "ps_5_0", "PSMain");
     gAssetManager->LoadShader("basicVS.hlsl", "vs_5_0", "VSMain");
@@ -171,13 +192,25 @@ LRESULT CALLBACK WndProc( HWND _hWnd, UINT _msg, WPARAM _wParam, LPARAM _lParam 
         PostQuitMessage(0);
         break;
 
+    case WM_SYSCOMMAND:
+        switch (_wParam & 0xfff0)
+        {
+        case SC_SCREENSAVE:
+        case SC_MONITORPOWER:
+        case SC_KEYMENU:
+            return 0L;
+        default:
+            break;
+        }
+        break;
+
     case WM_SIZE:
         gRenderDevice.ResizeSwapchain(_hWnd);
         break;
 
     default:
-        return DefWindowProc(_hWnd, _msg, _wParam, _lParam);
+        break;
     }
 
-    return 0;
+    return DefWindowProcW(_hWnd, _msg, _wParam, _lParam);;
 }
