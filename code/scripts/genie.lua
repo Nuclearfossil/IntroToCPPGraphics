@@ -40,14 +40,15 @@ configuration {"Debug", "x32"}
   libdirs { path.join(THIRD_PARTY_DIR, "assimp/lib/win32/Debug")}
   links {"D3D11", "D3DCompiler"}
   links {"assimp-vc140-mt","zlibstaticd"}
-  links {"kernel32","user32","gdi32","winspool","comdlg32","advapi32","shell32","ole32","oleaut32","uuid","odbc32","odbccp32"}
+  links {"kernel32","user32","gdi32","winspool","comdlg32","advapi32","shell32","ole32","oleaut32","uuid","odbc32","odbccp32", "winmm", "dxgi"}
   flags {"ExtraWarnings"}
   -- To reproduce the linker bug reported in https://github.com/bkaradzic/GENie/issues/266
   -- comment out the two lines below.
   linkoptions {"/PDB:pdbs/output-dx32.pdb"}
   targetsuffix "-d"
   postbuildcommands { "xcopy ..\\..\\3rdparty\\assimp\\bin\\Debug\\assimp-vc140-mt.dll $(TargetDir) /Y ",
-                      "xcopy ..\\..\\..\\assets\\raw\\*.*  $(TargetDir)assets\\raw\\ /Y /E"
+                      "xcopy ..\\..\\..\\assets\\raw\\*.*  $(TargetDir)assets\\raw\\ /Y /E",
+                      "xcopy ..\\..\\..\\data\\Shaders\\*.*  $(TargetDir)data\\Shaders\\ /Y /E"
                     }
 
 configuration {"Debug", "x64"}
@@ -55,14 +56,15 @@ configuration {"Debug", "x64"}
   libdirs { path.join(THIRD_PARTY_DIR, "assimp/lib/win64/Debug")}
   links {"D3D11", "D3DCompiler"}
   links {"assimp-vc140-mt","zlibstaticd"}
-  links {"kernel32","user32","gdi32","winspool","comdlg32","advapi32","shell32","ole32","oleaut32","uuid","odbc32","odbccp32"}
+  links {"kernel32","user32","gdi32","winspool","comdlg32","advapi32","shell32","ole32","oleaut32","uuid","odbc32","odbccp32", "winmm", "dxgi"}
   flags {"ExtraWarnings"}
   -- To reproduce the linker bug reported in https://github.com/bkaradzic/GENie/issues/266
   -- comment out the two lines below.
   linkoptions {"/PDB:pdbs/output-dx64.pdb"}
   targetsuffix "-d"
   postbuildcommands { "xcopy ..\\..\\3rdparty\\assimp\\bin\\Debug\\assimp-vc140-mt.dll $(TargetDir) /Y ",
-                      "xcopy ..\\..\\..\\assets\\raw\\*.*  $(TargetDir)assets\\raw\\ /Y /E"
+                      "xcopy ..\\..\\..\\assets\\raw\\*.*  $(TargetDir)assets\\raw\\ /Y /E",
+                      "xcopy ..\\..\\..\\data\\Shaders\\*.*  $(TargetDir)data\\Shaders\\ /Y /E"
                     }
 
 -- configuration for Release
@@ -71,10 +73,11 @@ configuration {"Release", "x32"}
   libdirs { path.join(THIRD_PARTY_DIR, "assimp/lib/win32/Release") }
   links {"D3D11", "D3DCompiler"}
   links {"assimp-vc140-mt","zlibstatic"}
-  links {"kernel32","user32","gdi32","winspool","comdlg32","advapi32","shell32","ole32","oleaut32","uuid","odbc32","odbccp32"}
+  links {"kernel32","user32","gdi32","winspool","comdlg32","advapi32","shell32","ole32","oleaut32","uuid","odbc32","odbccp32", "winmm", "dxgi"}
   flags {"Optimize", "ExtraWarnings"}
   postbuildcommands { "xcopy ..\\..\\3rdparty\\assimp\\bin\\Release\\assimp-vc140-mt.dll $(TargetDir) /Y ",
-                      "xcopy ..\\..\\..\\assets\\raw\\*.*  $(TargetDir)assets\\raw\\ /Y /E"
+                      "xcopy ..\\..\\..\\assets\\raw\\*.*  $(TargetDir)assets\\raw\\ /Y /E",
+                      "xcopy ..\\..\\..\\data\\Shaders\\*.*  $(TargetDir)data\\Shaders\\ /Y /E"
                     }
 
 configuration {"Release", "x64"}
@@ -82,10 +85,11 @@ configuration {"Release", "x64"}
   libdirs { path.join(THIRD_PARTY_DIR, "assimp/lib/win64/Release") }
   links {"D3D11", "D3DCompiler"}
   links {"assimp-vc140-mt","zlibstatic"}
-  links {"kernel32","user32","gdi32","winspool","comdlg32","advapi32","shell32","ole32","oleaut32","uuid","odbc32","odbccp32"}
+  links {"kernel32","user32","gdi32","winspool","comdlg32","advapi32","shell32","ole32","oleaut32","uuid","odbc32","odbccp32", "winmm", "dxgi"}
   flags {"Optimize", "ExtraWarnings"}
   postbuildcommands { "xcopy ..\\..\\3rdparty\\assimp\\bin\\Release\\assimp-vc140-mt.dll $(TargetDir) /Y ",
-                      "xcopy ..\\..\\..\\assets\\raw\\*.*  $(TargetDir)assets\\raw\\ /Y /E"
+                      "xcopy ..\\..\\..\\assets\\raw\\*.*  $(TargetDir)assets\\raw\\ /Y /E",
+                      "xcopy ..\\..\\..\\data\\Shaders\\*.*  $(TargetDir)data\\Shaders\\ /Y /E"
                     }
 
 -- our first project
@@ -98,12 +102,6 @@ project "intro01"
 
   includedirs {
     path.join(PROJ_DIR, "src"),
-    path.join(THIRD_PARTY_DIR, "EASTL/include"),
-    path.join(THIRD_PARTY_DIR, "EASTL/packages/EAStdC/include"),
-    path.join(THIRD_PARTY_DIR, "EASTL/packages/EAAssert/include"),
-    path.join(THIRD_PARTY_DIR, "EASTL/packages/EATest/include"),
-    path.join(THIRD_PARTY_DIR, "EASTL/packages/EAMain/include"),
-    path.join(THIRD_PARTY_DIR, "EASTL/packages/EAThread/include"),
     path.join(THIRD_PARTY_DIR, "assimp/include")
   }
 
@@ -111,11 +109,30 @@ project "intro01"
     path.join(PROJ_DIR, "src/**.h"),
     path.join(PROJ_DIR, "src/**.cpp"),
     path.join(PROJ_DIR, "src/Intro01.rc"),
-    path.join(THIRD_PARTY_DIR, "EASTL/source/*.cpp"),
-    path.join(THIRD_PARTY_DIR, "EASTL/packages/**.h"),
-    path.join(THIRD_PARTY_DIR, "EASTL/packages/**.cpp")
   }
 
   resoptions {
-    "CPPD3DIntroduction.rc"
+    "src/Intro01.rc"
+  }
+
+-- A stub project
+project "testbed"
+  PROJ_DIR = path.join(WORKSPACE_DIR, "testbed")
+  flags { "WinMain", "NoExceptions" }
+
+  kind "WindowedApp"
+  debugdir "$(TargetDir)"
+
+  includedirs {
+    path.join(PROJ_DIR, "src")
+  }
+
+  files {
+    path.join(PROJ_DIR, "src/**.h"),
+    path.join(PROJ_DIR, "src/**.cpp"),
+    path.join(PROJ_DIR, "src/testbed.rc")
+  }
+
+  resoptions {
+    "src/testbed.rc"
   }

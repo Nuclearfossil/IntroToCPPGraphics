@@ -6,6 +6,9 @@
 
 using namespace DirectX;
 
+// ======================================================================================
+// Forward Declarations - so the header file doesn't have to #include anything
+// ======================================================================================
 class ID3D11Buffer;
 
 // Initial Mesh Layout - Consists of a Postion, Normal and Single Texture UV
@@ -27,8 +30,8 @@ public:
     void Render();
 
 private:
-    ID3D11Buffer*           mVertexBuffer;
-    ID3D11Buffer*           mIndexBuffer;
+    ID3D11Buffer* mVertexBuffer;
+    ID3D11Buffer* mIndexBuffer;
 
     PositionNormalUVLayout* mRawVertexData;
     unsigned int* mIndexBufferData;

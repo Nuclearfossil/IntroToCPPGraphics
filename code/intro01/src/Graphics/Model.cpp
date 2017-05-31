@@ -24,6 +24,7 @@ Model::~Model()
 
     delete[] mMeshArray;
     delete mMaterial;
+    mMeshCount = 0;
 }
 
 void Model::Initialize(unsigned int meshcount)

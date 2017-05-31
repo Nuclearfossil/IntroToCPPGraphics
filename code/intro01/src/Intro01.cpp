@@ -44,11 +44,11 @@ LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
 // Globals
 //--------------------------------------------------------------------------------------
 RenderDevice    gRenderDevice;
-VisualGrid*     gVisualGrid = nullptr;
-Camera*         gCamera = nullptr;
-AssetManager*   gAssetManager = nullptr;
-HINSTANCE       gHInst = nullptr;
-HWND            gHWnd	= nullptr;
+VisualGrid*     gVisualGrid     = nullptr;
+Camera*         gCamera         = nullptr;
+AssetManager*   gAssetManager   = nullptr;
+HINSTANCE       gHInst          = nullptr;
+HWND            gHWnd	        = nullptr;
 
 
 int APIENTRY wWinMain(_In_      HINSTANCE hInstance,
@@ -94,7 +94,8 @@ int APIENTRY wWinMain(_In_      HINSTANCE hInstance,
         else
         {
             gCamera->Render();
-            gCamera->GetViewMatrix(view);
+            view = gCamera->GetViewMatrix();
+            projection = gCamera->GetProjMatrix();
             colorShader.Render(gRenderDevice.GetDeviceContext(), world, view, projection);
             model->Render();
             gRenderDevice.Present();

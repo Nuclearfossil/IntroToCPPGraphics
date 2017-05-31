@@ -1,5 +1,8 @@
 #pragma once
 
+// ======================================================================================
+// Forward Declarations - so the header file doesn't have to #include anything
+// ======================================================================================
 class Mesh;
 class Material;
 

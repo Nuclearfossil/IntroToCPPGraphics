@@ -7,6 +7,9 @@
 #include <unordered_map>
 #include <string>
 
+// ======================================================================================
+// Forward Declarations - so the header file doesn't have to #include anything
+// ======================================================================================
 class IResourceLoader;
 class Model;
 class ShaderResource;

@@ -1,4 +1,8 @@
 #pragma once
+
+// ======================================================================================
+// Forward Declarations - so the header file doesn't have to #include anything
+// ======================================================================================
 class ShaderResource;
 
 class ColorShader
@@ -28,9 +32,9 @@ private:
     void RenderShader(ID3D11DeviceContext* _context);
 
 private:
-    ID3D11VertexShader*		m_vertexShader;
-    ID3D11PixelShader*		m_pixelShader;
-    ID3D11InputLayout*		m_layout;
-    ID3D11Buffer*			m_matrixBuffer;
+    ID3D11VertexShader*  m_vertexShader;
+    ID3D11PixelShader*   m_pixelShader;
+    ID3D11InputLayout*   m_layout;
+    ID3D11Buffer*        m_matrixBuffer;
 };
 
