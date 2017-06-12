@@ -140,13 +140,14 @@ HRESULT InitWindow( HINSTANCE _instance, int _cmdShow )
     gHInst = _instance;
     RECT rc = { 0, 0, 800, 600 };
     AdjustWindowRect(&rc, WS_OVERLAPPEDWINDOW, FALSE);
-    gHWnd = CreateWindow( L"WTGTP_01", L"Walking The Graphics Pipeline - 01",
-                          WS_OVERLAPPEDWINDOW,
-                          CW_USEDEFAULT, CW_USEDEFAULT,
-                          rc.right - rc.left, rc.bottom - rc.top,
-                          NULL, NULL,
-                          _instance,
-                          NULL );
+    gHWnd = CreateWindow(L"WTGTP_01",
+                         L"Walking The Graphics Pipeline - 01",
+                         WS_OVERLAPPEDWINDOW,
+                         CW_USEDEFAULT, CW_USEDEFAULT,
+                         rc.right - rc.left, rc.bottom - rc.top,
+                         NULL, NULL,
+                         _instance,
+                         NULL);
 
     if (!gHWnd)
         return E_FAIL;

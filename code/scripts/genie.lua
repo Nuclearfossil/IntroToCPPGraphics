@@ -115,6 +115,28 @@ project "intro01"
     "src/Intro01.rc"
   }
 
+-- A new project
+project "tutorial01"
+  PROJ_DIR = path.join(WORKSPACE_DIR, "tutorial01")
+  flags { "WinMain", "NoExceptions" }
+
+  kind "WindowedApp"
+  debugdir "$(TargetDir)"
+
+  includedirs {
+    path.join(PROJ_DIR, "src")
+  }
+
+  files {
+    path.join(PROJ_DIR, "src/**.h"),
+    path.join(PROJ_DIR, "src/**.cpp"),
+    path.join(PROJ_DIR, "src/tutorial01.rc")
+  }
+
+  resoptions {
+    "src/tutorial01.rc"
+  }
+
 -- A stub project
 project "testbed"
   PROJ_DIR = path.join(WORKSPACE_DIR, "testbed")

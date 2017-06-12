@@ -54,7 +54,7 @@ ID3D11Buffer*               gD3DIndexBuffer        = nullptr;
 ID3D11VertexShader*         gD3DVertexShader       = nullptr;
 ID3D11PixelShader*          gD3DPixelShader        = nullptr;
 
-D3D11_VIEWPORT              gViewport = {0};
+D3D11_VIEWPORT              gViewport = { 0 };
 
 
 // Shader resources
@@ -74,13 +74,13 @@ XMMATRIX gViewMatrix;
 XMMATRIX gProjectionMatrix;
 
 // Vertex data for a colored cube.
-struct VertexPosColor
+struct VertexNormalUV
 {
     XMFLOAT3 Position;
     XMFLOAT3 Color;
 };
 
-VertexPosColor gVertices[8] = 
+VertexNormalUV gVertices[8] = 
 {
     { XMFLOAT3( -1.0f, -1.0f, -1.0f ), XMFLOAT3( 0.0f, 0.0f, 0.0f ) }, // 0
     { XMFLOAT3( -1.0f,  1.0f, -1.0f ), XMFLOAT3( 0.0f, 1.0f, 0.0f ) }, // 1
@@ -529,7 +529,7 @@ bool GenerateContent()
     ZeroMemory(&vertexBufferDesc, sizeof(D3D11_BUFFER_DESC));
 
     vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-    vertexBufferDesc.ByteWidth = sizeof(VertexPosColor) * _countof(gVertices);
+    vertexBufferDesc.ByteWidth = sizeof(VertexNormalUV) * _countof(gVertices);
     vertexBufferDesc.CPUAccessFlags = 0;
     vertexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
 
@@ -648,7 +648,7 @@ void Render()
 
     Clear(Colors::CornflowerBlue, 1.0f, 0);
 
-    const UINT vertexStride = sizeof(VertexPosColor);
+    const UINT vertexStride = sizeof(VertexNormalUV);
     const UINT offset = 0;
 
     gD3DDeviceContext->IASetVertexBuffers(0, 1, &gD3DVertexBuffer, &vertexStride, &offset);
@@ -765,8 +765,8 @@ ID3D11VertexShader* CreateVertexShaderFromFile(const std::wstring& filename, con
         // Create the input layout for the vertex shader.
         D3D11_INPUT_ELEMENT_DESC vertexLayoutDesc[] = 
         {
-            { "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, offsetof(VertexPosColor,Position), D3D11_INPUT_PER_VERTEX_DATA, 0 },
-            { "COLOR", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, offsetof(VertexPosColor,Color), D3D11_INPUT_PER_VERTEX_DATA, 0 }
+            { "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, offsetof(VertexNormalUV,Position), D3D11_INPUT_PER_VERTEX_DATA, 0 },
+            { "COLOR", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, offsetof(VertexNormalUV,Color), D3D11_INPUT_PER_VERTEX_DATA, 0 }
         };
 
         hr = gD3DDevice->CreateInputLayout(vertexLayoutDesc, _countof(vertexLayoutDesc), shaderBlob->GetBufferPointer(), shaderBlob->GetBufferSize(), &gD3DInputLayout);
