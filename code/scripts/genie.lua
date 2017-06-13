@@ -44,7 +44,7 @@ configuration {"Debug", "x32"}
   flags {"ExtraWarnings"}
   -- To reproduce the linker bug reported in https://github.com/bkaradzic/GENie/issues/266
   -- comment out the two lines below.
-  linkoptions {"/PDB:pdbs/output-dx32.pdb"}
+  linkoptions {"/PDB:pdbs/$(TargetName)output-dx32.pdb"}
   targetsuffix "-d"
   postbuildcommands { "xcopy ..\\..\\3rdparty\\assimp\\bin\\Debug\\assimp-vc140-mt.dll $(TargetDir) /Y ",
                       "xcopy ..\\..\\..\\assets\\raw\\*.*  $(TargetDir)assets\\raw\\ /Y /E",
@@ -60,7 +60,7 @@ configuration {"Debug", "x64"}
   flags {"ExtraWarnings"}
   -- To reproduce the linker bug reported in https://github.com/bkaradzic/GENie/issues/266
   -- comment out the two lines below.
-  linkoptions {"/PDB:pdbs/output-dx64.pdb"}
+  linkoptions {"/PDB:pdbs/$(TargetName)output-dx64.pdb"}
   targetsuffix "-d"
   postbuildcommands { "xcopy ..\\..\\3rdparty\\assimp\\bin\\Debug\\assimp-vc140-mt.dll $(TargetDir) /Y ",
                       "xcopy ..\\..\\..\\assets\\raw\\*.*  $(TargetDir)assets\\raw\\ /Y /E",
