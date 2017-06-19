@@ -34,6 +34,7 @@
 ///--------------------------------------------------------------------------------------
 #include "graphics\RenderDevice.h"
 #include "graphics\ShaderManager.h"
+#include "graphics\CubeMesh.h"
 
 ///--------------------------------------------------------------------------------------
 /// Utilities
@@ -59,7 +60,7 @@ HINSTANCE       gHInst          = nullptr;
 HWND            gHWnd           = nullptr;
 RenderDevice*   gRenderDevice   = nullptr;
 ShaderManager*  gShaderManager  = nullptr;
-
+CubeMesh*       gMesh           = nullptr;
 
 int APIENTRY wWinMain(_In_      HINSTANCE hInstance,
                       _In_opt_  HINSTANCE hPrevInstance,
@@ -182,6 +183,12 @@ HRESULT InitResources()
     if (FAILED(gShaderManager->LoadPSFromFile(L".\\assets\\raw\\basicPS.hlsl", "PSMain")))
         return E_FAIL;
 
+    gMesh = new CubeMesh();
+    if (FAILED(gMesh->Initialize(gRenderDevice)))
+    {
+        return E_FAIL;
+    }
+
     return S_OK;
 }
 
@@ -190,6 +197,9 @@ HRESULT InitResources()
 ///--------------------------------------------------------------------------------------
 void Shutdown()
 {
+    delete gMesh;
+    gMesh = nullptr;
+
     gShaderManager->Cleanup();
     delete gShaderManager;
     gShaderManager = nullptr;

@@ -71,6 +71,9 @@ public:
 
     HRESULT LoadVSFromFile(LPCWSTR filename, const char* mainfunction);
     HRESULT LoadPSFromFile(LPCWSTR filename, const char* mainfunction);
+    ID3D11InputLayout* GetLayout() { return mD3DInputLayout; }
+
+    bool UpdateProjection(HWND hWnd);
 
 private:
     void DetermineSupportedShaderLevel(RenderDevice* device);

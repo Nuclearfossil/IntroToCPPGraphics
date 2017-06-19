@@ -1,0 +1,8 @@
+
+Cube::Cube()
+{
+}
+
+Cube::~Cube()
+{
+}

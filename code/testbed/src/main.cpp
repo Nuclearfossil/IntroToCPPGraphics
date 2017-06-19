@@ -651,11 +651,6 @@ void Render()
     const UINT vertexStride = sizeof(VertexNormalUV);
     const UINT offset = 0;
 
-    gD3DDeviceContext->IASetVertexBuffers(0, 1, &gD3DVertexBuffer, &vertexStride, &offset);
-    gD3DDeviceContext->IASetInputLayout(gD3DInputLayout);
-    gD3DDeviceContext->IASetIndexBuffer(gD3DIndexBuffer, DXGI_FORMAT_R16_UINT, 0);
-    gD3DDeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-
     gD3DDeviceContext->VSSetShader(gD3DVertexShader, nullptr, 0);
     gD3DDeviceContext->VSSetConstantBuffers(0, 3, gD3DConstantBuffers);
 
@@ -666,6 +661,11 @@ void Render()
 
     gD3DDeviceContext->OMSetRenderTargets(1, &gD3DRenderTargetView, gD3DDepthStencilView);
     gD3DDeviceContext->OMSetDepthStencilState(gD3DDepthStencilState, 1);
+
+    gD3DDeviceContext->IASetVertexBuffers(0, 1, &gD3DVertexBuffer, &vertexStride, &offset);
+    gD3DDeviceContext->IASetInputLayout(gD3DInputLayout);
+    gD3DDeviceContext->IASetIndexBuffer(gD3DIndexBuffer, DXGI_FORMAT_R16_UINT, 0);
+    gD3DDeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
     gD3DDeviceContext->DrawIndexed(_countof(gIndicies), 0, 0);
 

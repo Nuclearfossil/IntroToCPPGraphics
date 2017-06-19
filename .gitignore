@@ -26,6 +26,9 @@
 *.out
 *.app
 
+# Solutions and projects
+**.sln
+
 code/projects/
 
 code/win32_vs2017/

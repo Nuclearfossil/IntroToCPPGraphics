@@ -242,3 +242,24 @@ void ShaderManager::DetermineSupportedShaderLevel(RenderDevice* device)
         }
     }
 }
+
+bool ShaderManager::UpdateProjection(HWND hWnd)
+{
+    // Setup the projection matrix.
+    RECT clientRect;
+    GetClientRect(hWnd, &clientRect);
+
+    // Compute the exact client dimensions.
+    // This is required for a correct projection matrix.
+    float clientWidth = static_cast<float>(clientRect.right - clientRect.left);
+    float clientHeight = static_cast<float>(clientRect.bottom - clientRect.top);
+
+    DirectX::XMMATRIX projectionMatrix;
+    projectionMatrix = DirectX::XMMatrixPerspectiveFovLH(DirectX::XMConvertToRadians(45.0f), clientWidth/clientHeight, 0.1f, 100.0f);
+
+    ID3D11DeviceContext* context = nullptr;
+    mRenderDevice->GetD3D11()->GetImmediateContext(&context);
+    context->UpdateSubresource(mD3DConstantBuffers[CB_Appliation], 0, nullptr, &projectionMatrix, 0, 0);
+
+    return true;
+}

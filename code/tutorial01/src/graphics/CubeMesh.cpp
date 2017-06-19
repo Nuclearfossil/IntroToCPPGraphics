@@ -90,3 +90,19 @@ bool CubeMesh::Initialize(RenderDevice* device)
 
     return true;
 }
+
+void CubeMesh::Draw(RenderDevice* device, ID3D11InputLayout* layout)
+{
+    const UINT vertexStride = sizeof(VertexNormalUV);
+    const UINT offset = 0;
+    ID3D11DeviceContext* context = nullptr;
+
+    device->GetD3D11()->GetImmediateContext(&context);
+    context->IASetVertexBuffers(0, 1, &mVertexBuffer, &vertexStride, &offset);
+    context->IASetInputLayout(layout);
+    context->IASetIndexBuffer(mIndexBuffer, DXGI_FORMAT_R16_UINT, 0);
+    context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+    context->DrawIndexed(_countof(gIndicies), 0, 0);
+
+}
