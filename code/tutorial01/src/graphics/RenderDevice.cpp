@@ -50,12 +50,13 @@ int RenderDevice::InitDevice(HWND hWnd, bool vSync)
     swapChainDesc.Windowed = TRUE;
 
     UINT createDeviceFlags = 0;
-#if _DEBUG
-    createDeviceFlags = D3D11_CREATE_DEVICE_DEBUG;
-#endif
+// #if _DEBUG
+    // This appears to no longer work in Windows 10
+//     createDeviceFlags |= D3D11_CREATE_DEVICE_DEBUG;
+// #endif
 
     // These are the feature levels that we will accept.
-    D3D_FEATURE_LEVEL featureLevels[] = 
+    D3D_FEATURE_LEVEL featureLevels[] =
     {
         D3D_FEATURE_LEVEL_11_1,
         D3D_FEATURE_LEVEL_11_0,
@@ -66,7 +67,7 @@ int RenderDevice::InitDevice(HWND hWnd, bool vSync)
         D3D_FEATURE_LEVEL_9_1
     };
 
-    // This will be the feature level that 
+    // This will be the feature level that
     // is used to create our device and swap chain.
     D3D_FEATURE_LEVEL featureLevel;
 
@@ -74,27 +75,27 @@ int RenderDevice::InitDevice(HWND hWnd, bool vSync)
                                                D3D_DRIVER_TYPE_HARDWARE,
                                                nullptr,
                                                createDeviceFlags,
-                                               featureLevels, 
+                                               featureLevels,
                                                _countof(featureLevels),
-                                               D3D11_SDK_VERSION, 
-                                               &swapChainDesc, 
-                                               &mD3DSwapChain, 
-                                               &mD3DDevice, 
+                                               D3D11_SDK_VERSION,
+                                               &swapChainDesc,
+                                               &mD3DSwapChain,
+                                               &mD3DDevice,
                                                &featureLevel,
                                                &mD3DDeviceContext);
 
     if (hr == E_INVALIDARG)
     {
-        hr = D3D11CreateDeviceAndSwapChain(nullptr, 
+        hr = D3D11CreateDeviceAndSwapChain(nullptr,
                                            D3D_DRIVER_TYPE_HARDWARE,
-                                           nullptr, 
-                                           createDeviceFlags, 
-                                           &featureLevels[1], 
+                                           nullptr,
+                                           createDeviceFlags,
+                                           &featureLevels[1],
                                            _countof(featureLevels) - 1,
-                                           D3D11_SDK_VERSION, 
-                                           &swapChainDesc, 
-                                           &mD3DSwapChain, 
-                                           &mD3DDevice, 
+                                           D3D11_SDK_VERSION,
+                                           &swapChainDesc,
+                                           &mD3DSwapChain,
+                                           &mD3DDevice,
                                            &featureLevel,
                                            &mD3DDeviceContext);
     }
@@ -106,7 +107,7 @@ int RenderDevice::InitDevice(HWND hWnd, bool vSync)
 
     // The Direct3D device and swap chain were successfully created.
     // Now we need to initialize the buffers of the swap chain.
-    // Next initialize the back buffer of the swap chain and associate it to a 
+    // Next initialize the back buffer of the swap chain and associate it to a
     // render target view.
     ID3D11Texture2D* backBuffer;
     hr = mD3DSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&backBuffer);
@@ -205,20 +206,20 @@ void RenderDevice::ReleaseAll()
     SafeRelease(mD3DSwapChain);
     SafeRelease(mD3DDeviceContext);
 
-	#ifdef _DEBUG
-	ID3D11Debug* debugDevice = nullptr;
+    #ifdef _DEBUG
+    ID3D11Debug* debugDevice = nullptr;
     HRESULT hr = mD3DDevice->QueryInterface(IID_PPV_ARGS(&debugDevice));
 
     if (SUCCEEDED(hr))
         debugDevice->ReportLiveDeviceObjects(D3D11_RLDO_DETAIL);
-	
-	SafeRelease(debugDevice);
-	#endif
 
-    SafeRelease(mD3DDevice);
+    SafeRelease(debugDevice);
+    #endif
 
     delete mViewport;
     mViewport = nullptr;
+
+    SafeRelease(mD3DDevice);
 }
 
 void RenderDevice::Shutdown()

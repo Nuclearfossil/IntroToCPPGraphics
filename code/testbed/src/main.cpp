@@ -80,7 +80,7 @@ struct VertexNormalUV
     XMFLOAT3 Color;
 };
 
-VertexNormalUV gVertices[8] = 
+VertexNormalUV gVertices[8] =
 {
     { XMFLOAT3( -1.0f, -1.0f, -1.0f ), XMFLOAT3( 0.0f, 0.0f, 0.0f ) }, // 0
     { XMFLOAT3( -1.0f,  1.0f, -1.0f ), XMFLOAT3( 0.0f, 1.0f, 0.0f ) }, // 1
@@ -92,13 +92,13 @@ VertexNormalUV gVertices[8] =
     { XMFLOAT3(  1.0f, -1.0f,  1.0f ), XMFLOAT3( 1.0f, 0.0f, 1.0f ) }  // 7
 };
 
-WORD gIndicies[36] = 
+WORD gIndicies[36] =
 {
     0, 1, 2, 0, 2, 3,
     4, 6, 5, 4, 7, 6,
-    4, 5, 1, 4, 1, 0, 
+    4, 5, 1, 4, 1, 0,
     3, 2, 6, 3, 6, 7,
-    1, 5, 6, 1, 6, 2, 
+    1, 5, 6, 1, 6, 2,
     4, 0, 3, 4, 3, 7
 };
 
@@ -182,7 +182,7 @@ LRESULT CALLBACK WndProc (HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
             PostQuitMessage(0);
         }
         break;
-    default: 
+    default:
         return DefWindowProc(hwnd, message, wParam, lParam);
     }
 
@@ -262,7 +262,7 @@ int InitDirectX(HINSTANCE hInstance, BOOL vSync)
 #endif
 
     // These are the feature levels that we will accept.
-    D3D_FEATURE_LEVEL featureLevels[] = 
+    D3D_FEATURE_LEVEL featureLevels[] =
     {
         D3D_FEATURE_LEVEL_11_1,
         D3D_FEATURE_LEVEL_11_0,
@@ -273,7 +273,7 @@ int InitDirectX(HINSTANCE hInstance, BOOL vSync)
         D3D_FEATURE_LEVEL_9_1
     };
 
-    // This will be the feature level that 
+    // This will be the feature level that
     // is used to create our device and swap chain.
     D3D_FEATURE_LEVEL featureLevel;
 
@@ -297,7 +297,7 @@ int InitDirectX(HINSTANCE hInstance, BOOL vSync)
 
     // The Direct3D device and swap chain were successfully created.
     // Now we need to initialize the buffers of the swap chain.
-    // Next initialize the back buffer of the swap chain and associate it to a 
+    // Next initialize the back buffer of the swap chain and associate it to a
     // render target view.
     ID3D11Texture2D* backBuffer;
     hr = gD3DSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&backBuffer);
@@ -636,7 +636,7 @@ void Update(float deltaTime)
     static float angle = 0.0f;
     angle += 90.0f * deltaTime;
     XMVECTOR rotationAxis = XMVectorSet( 0, 1, 1, 0 );
-    
+
     gWorldMatrix = XMMatrixRotationAxis(rotationAxis, XMConvertToRadians(angle) );
     gD3DDeviceContext->UpdateSubresource(gD3DConstantBuffers[CB_Object], 0, nullptr, &gWorldMatrix, 0, 0);
 }
@@ -714,7 +714,7 @@ int Run()
             float deltaTime = (currentTime - previousTime) / 1000.0f;
             previousTime = currentTime;
 
-            // Cap the delta time to the max time step (useful if your 
+            // Cap the delta time to the max time step (useful if your
             // debugging and you don't want the deltaTime value to explode.
             deltaTime = std::min<float>(deltaTime, maxTimeStep);
 
@@ -739,9 +739,9 @@ ID3D11VertexShader* CreateVertexShaderFromFile(const std::wstring& filename, con
 #if _DEBUG
     flags |= D3DCOMPILE_DEBUG;
 #endif
-    HRESULT hr = D3DCompileFromFile(filename.c_str(), 
-                                    nullptr, 
-                                    D3D_COMPILE_STANDARD_FILE_INCLUDE, 
+    HRESULT hr = D3DCompileFromFile(filename.c_str(),
+                                    nullptr,
+                                    D3D_COMPILE_STANDARD_FILE_INCLUDE,
                                     entryPoint.c_str(),
                                     profile.c_str(),
                                     flags,
@@ -763,7 +763,7 @@ ID3D11VertexShader* CreateVertexShaderFromFile(const std::wstring& filename, con
     else
     {
         // Create the input layout for the vertex shader.
-        D3D11_INPUT_ELEMENT_DESC vertexLayoutDesc[] = 
+        D3D11_INPUT_ELEMENT_DESC vertexLayoutDesc[] =
         {
             { "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, offsetof(VertexNormalUV,Position), D3D11_INPUT_PER_VERTEX_DATA, 0 },
             { "COLOR", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, offsetof(VertexNormalUV,Color), D3D11_INPUT_PER_VERTEX_DATA, 0 }
@@ -802,9 +802,9 @@ ID3D11PixelShader* CreatePixelShaderFromFile(const std::wstring& filename, const
 #if _DEBUG
     flags |= D3DCOMPILE_DEBUG;
 #endif
-    HRESULT hr = D3DCompileFromFile(filename.c_str(), 
-                                    nullptr, 
-                                    D3D_COMPILE_STANDARD_FILE_INCLUDE, 
+    HRESULT hr = D3DCompileFromFile(filename.c_str(),
+                                    nullptr,
+                                    D3D_COMPILE_STANDARD_FILE_INCLUDE,
                                     entryPoint.c_str(),
                                     profile.c_str(),
                                     flags,

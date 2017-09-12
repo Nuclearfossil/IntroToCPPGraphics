@@ -11,7 +11,7 @@
 #include "utils\utils.h"
 
 
-VertexNormalUV gVertices[8] = 
+VertexNormalUV gVertices[8] =
 {
     { DirectX::XMFLOAT4( -1.0f, -1.0f, -1.0f, 1.0f ), DirectX::XMFLOAT3( 0.0f, 0.0f, 1.0f ), DirectX::XMFLOAT2( 0.0f, 0.0f ) }, // 0
     { DirectX::XMFLOAT4( -1.0f,  1.0f, -1.0f, 1.0f ), DirectX::XMFLOAT3( 0.0f, 0.0f, 1.0f ), DirectX::XMFLOAT2( 0.0f, 0.0f ) }, // 1
@@ -23,13 +23,13 @@ VertexNormalUV gVertices[8] =
     { DirectX::XMFLOAT4(  1.0f, -1.0f,  1.0f, 1.0f ), DirectX::XMFLOAT3( 0.0f, 0.0f, 1.0f ), DirectX::XMFLOAT2( 0.0f, 0.0f ) }  // 7
 };
 
-WORD gIndicies[36] = 
+WORD gIndicies[36] =
 {
     0, 1, 2, 0, 2, 3,
     4, 6, 5, 4, 7, 6,
-    4, 5, 1, 4, 1, 0, 
+    4, 5, 1, 4, 1, 0,
     3, 2, 6, 3, 6, 7,
-    1, 5, 6, 1, 6, 2, 
+    1, 5, 6, 1, 6, 2,
     4, 0, 3, 4, 3, 7
 };
 
@@ -85,8 +85,6 @@ bool CubeMesh::Initialize(RenderDevice* device)
     {
         return false;
     }
-
-    SafeRelease(d3dDevice);
 
     return true;
 }
